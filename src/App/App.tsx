@@ -13,12 +13,10 @@ const AppRouter = () => {
   return <RouterProvider router={router} />
 }
 
-function App() {
+export function App() {
   return (
     <AppProvider>
       <AppRouter />
     </AppProvider>
   )
 }
-
-export default App

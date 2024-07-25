@@ -11,6 +11,13 @@ export const createRouter = (queryClient: QueryClient) =>
       },
     },
     {
+      path: '/auth/login',
+      lazy: async () => {
+        const { LoginRoute } = await import('./authentication')
+        return { Component: LoginRoute }
+      },
+    },
+    {
       path: '*',
       lazy: async () => {
         const { NotFoundRoute } = await import('./not-found')

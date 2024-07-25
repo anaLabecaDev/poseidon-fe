@@ -45,16 +45,22 @@
     "bun": "^1.1.x"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.51.11",
+    "@azure/msal-browser": "3.20.0",
+    "@azure/msal-react": "2.0.22",
+    "@tanstack/react-query": "5.51.11",
+    "antd": "5.19.3",
+    "axios": "1.7.2",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "react-router-dom": "6.25.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.x",
     "@commitlint/config-conventional": "^19.x",
     "@commitlint/prompt-cli": "^19.x",
     "@commitlint/types": "^19.x",
-    "@tanstack/eslint-plugin-query": "^5.51.12",
+    "@tanstack/eslint-plugin-query": "5.51.12",
     "@testing-library/jest-dom": "^6.x",
     "@testing-library/react": "^15.x",
     "@testing-library/user-event": "^14.x",

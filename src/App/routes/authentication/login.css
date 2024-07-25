@@ -1,0 +1,24 @@
+.login-form {
+  width: auto;
+  align-content: center;
+  text-align: center;
+  margin: auto !important;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.login-form iframe {
+  align-content: center;
+  text-align: center;
+  margin: auto !important;
+}
+
+.spin-message {
+  position: relative;
+  top: 1rem;
+  color: #0047AB;
+  font-size: larger;
+}
