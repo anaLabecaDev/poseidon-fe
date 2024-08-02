@@ -1,5 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { QueryClient } from '@tanstack/react-query'
+import AppRoot from '@/app/routes/app/root'
+import { ProtectedRoute } from '@/components/protected-route'
 
 export const createRouter = (queryClient: QueryClient) =>
   createBrowserRouter([
@@ -16,6 +18,14 @@ export const createRouter = (queryClient: QueryClient) =>
         const { LoginRoute } = await import('./authentication')
         return { Component: LoginRoute }
       },
+    },
+    {
+      path: '/app',
+      element: (
+        <ProtectedRoute>
+          <AppRoot />
+        </ProtectedRoute>
+      ),
     },
     {
       path: '*',

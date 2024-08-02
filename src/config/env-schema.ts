@@ -11,6 +11,7 @@ export const EnvSchema = z.object({
   APP_MOCK_API_PORT: z.string().optional().default('8080'),
   CLIENT_ID: z.string(),
   TENANT_ID: z.string(),
+  AUTH_SCOPE: z.string(),
 })
 
 export type EnvSchemaType = z.infer<typeof EnvSchema>

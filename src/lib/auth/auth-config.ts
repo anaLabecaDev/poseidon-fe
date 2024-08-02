@@ -8,7 +8,7 @@ export const msalConfig: Configuration = {
     redirectUri: '/',
   },
   cache: {
-    cacheLocation: 'sessionStorage',
+    cacheLocation: 'localStorage',
     storeAuthStateInCookie: false,
   },
 }
@@ -16,5 +16,5 @@ export const msalConfig: Configuration = {
 export const msalInstance = new PublicClientApplication(msalConfig)
 
 export const loginRequest = {
-  scopes: ['openid', 'profile', 'User.Read'],
+  scopes: [env.AUTH_SCOPE],
 }
