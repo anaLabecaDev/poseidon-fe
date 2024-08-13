@@ -1,34 +1,40 @@
-import { Button, Divider, Layout, Typography } from 'antd'
-import { apiInstance } from '@/lib/api-client'
+import { Divider, Layout, Typography } from 'antd'
+import { useUsers } from '@/lib/auth/auth'
 
 const { Header, Footer, Content, Sider } = Layout
 const { Text } = Typography
 
-const getMe = () => {
-  console.log(apiInstance.interceptors)
+const menuItems = ['calculator', 'employees', 'itineraries', 'proposals'] as const
 
-  apiInstance
-    .get('/users/me')
-    .then((response) => {
-      console.log(response)
-    })
-    .catch((error) => {
-      console.error(error)
-    })
+type MenuItems = (typeof menuItems)[number]
+
+const items: Record<MenuItems, { label: string; path: string }> = {
+  calculator: { label: 'Calculator', path: '/calculator' },
+  employees: { label: 'Employees', path: '/employees' },
+  itineraries: { label: 'Itineraries', path: '/itineraries' },
+  proposals: { label: 'Proposals', path: '/proposals' },
 }
 
 const AppRoot = () => {
+  const { data, isLoading } = useUsers()
+
+  if (isLoading) {
+    return <Text>Loading...</Text>
+  }
+
   return (
     <Layout>
       <Header>
-        <Text strong>Poseidon</Text>
-        <Divider type="vertical" />
-        <Text>User name</Text>
+        <Text strong style={{ color: '#FFFFFF' }}>
+          Poseidon
+        </Text>
+        <Divider type="vertical" style={{ borderColor: '#FFFFFF' }} />
+        <Text style={{ color: '#FFFFFF' }}>{`${data?.firstName} ${data?.lastName}`}</Text>
       </Header>
       <Layout>
         <Sider style={{ background: '#FFFFFF' }}></Sider>
         <Content style={{ background: '#F0F0F0' }}>
-          <Button onClick={() => getMe()}>Test me</Button>
+          <Text>{`User name ${data?.firstName}`}</Text>
         </Content>
       </Layout>
       <Footer style={{ textAlign: 'center' }}>Nexus Group ©2024</Footer>

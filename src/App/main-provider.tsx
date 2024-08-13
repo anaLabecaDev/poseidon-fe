@@ -1,6 +1,7 @@
 import React from 'react'
 import { MsalProvider } from '@azure/msal-react'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Alert, Spin } from 'antd'
 import { MainErrorFallback } from '@/components/errors/main-fallback'
 import { msalInstance } from '@/lib/auth/auth-config'
@@ -17,6 +18,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
           <MsalProvider instance={msalInstance}>
             <AuthProvider>{children}</AuthProvider>
           </MsalProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ErrorBoundary>
     </React.Suspense>
