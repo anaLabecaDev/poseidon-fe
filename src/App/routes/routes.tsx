@@ -1,31 +1,13 @@
-import { createBrowserRouter } from 'react-router-dom'
-import { QueryClient } from '@tanstack/react-query'
+import { useMemo } from 'react'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import AppRoot from '@/app/routes/app/root'
-import { ProtectedRoute } from '@/components/protected-route'
 
-export const createRouter = (queryClient: QueryClient) =>
+const createRouter = (queryClient: QueryClient) =>
   createBrowserRouter([
     {
       path: '/',
-      lazy: async () => {
-        const { LandingRoute } = await import('./landing')
-        return { Component: LandingRoute }
-      },
-    },
-    {
-      path: '/auth/login',
-      lazy: async () => {
-        const { LoginRoute } = await import('./authentication')
-        return { Component: LoginRoute }
-      },
-    },
-    {
-      path: '/app',
-      element: (
-        <ProtectedRoute>
-          <AppRoot />
-        </ProtectedRoute>
-      ),
+      element: <AppRoot />,
     },
     {
       path: '*',
@@ -35,3 +17,11 @@ export const createRouter = (queryClient: QueryClient) =>
       },
     },
   ])
+
+export const AppRouter = () => {
+  const queryClient = useQueryClient()
+
+  const router = useMemo(() => createRouter(queryClient), [queryClient])
+
+  return <RouterProvider router={router} />
+}

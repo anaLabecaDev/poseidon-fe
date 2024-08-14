@@ -1,44 +1,37 @@
-import { Divider, Layout, Typography } from 'antd'
-import { useUsers } from '@/lib/auth/auth'
+import { InteractionType } from '@azure/msal-browser'
+import { MsalAuthenticationResult, MsalAuthenticationTemplate } from '@azure/msal-react'
+import { Flex, Typography } from 'antd'
+import { DashboardLayout } from '@/components/layouts/dashboard-layout'
+import { loginRequest } from '@/lib/auth/auth-config'
 
-const { Header, Footer, Content, Sider } = Layout
-const { Text } = Typography
+const { Text, Title } = Typography
 
-const menuItems = ['calculator', 'employees', 'itineraries', 'proposals'] as const
+const ErrorComponent = ({ error }: MsalAuthenticationResult) => {
+  return <Text type="danger">An Error Occurred: {error ? error.errorCode : 'unknown error'}</Text>
+}
 
-type MenuItems = (typeof menuItems)[number]
-
-const items: Record<MenuItems, { label: string; path: string }> = {
-  calculator: { label: 'Calculator', path: '/calculator' },
-  employees: { label: 'Employees', path: '/employees' },
-  itineraries: { label: 'Itineraries', path: '/itineraries' },
-  proposals: { label: 'Proposals', path: '/proposals' },
+const Loading = () => {
+  return <Text>Authentication in progress...</Text>
 }
 
 const AppRoot = () => {
-  const { data, isLoading } = useUsers()
-
-  if (isLoading) {
-    return <Text>Loading...</Text>
+  const authRequest = {
+    ...loginRequest,
   }
 
   return (
-    <Layout>
-      <Header>
-        <Text strong style={{ color: '#FFFFFF' }}>
-          Poseidon
-        </Text>
-        <Divider type="vertical" style={{ borderColor: '#FFFFFF' }} />
-        <Text style={{ color: '#FFFFFF' }}>{`${data?.firstName} ${data?.lastName}`}</Text>
-      </Header>
-      <Layout>
-        <Sider style={{ background: '#FFFFFF' }}></Sider>
-        <Content style={{ background: '#F0F0F0' }}>
-          <Text>{`User name ${data?.firstName}`}</Text>
-        </Content>
-      </Layout>
-      <Footer style={{ textAlign: 'center' }}>Nexus Group ©2024</Footer>
-    </Layout>
+    <MsalAuthenticationTemplate
+      interactionType={InteractionType.Redirect}
+      authenticationRequest={authRequest}
+      errorComponent={ErrorComponent}
+      loadingComponent={Loading}
+    >
+      <DashboardLayout>
+        <Flex vertical align="center" justify="center">
+          <Title level={1}>{'Olá'}</Title>
+        </Flex>
+      </DashboardLayout>
+    </MsalAuthenticationTemplate>
   )
 }
 

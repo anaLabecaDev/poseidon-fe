@@ -1,43 +1,53 @@
-import { useMsal } from '@azure/msal-react'
-import axios, { InternalAxiosRequestConfig } from 'axios'
+import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import { env } from '@/config/env'
+import { acquireAccessToken } from '@/lib/auth/auth-config'
 
-const apiInstance = axios.create({
+const axiosInstance = axios.create({
   baseURL: env.API_URL,
+  headers: {
+    'Content-type': 'application/json',
+  },
 })
 
-function authRequestInterceptor(config: InternalAxiosRequestConfig) {
-  if (config.headers) {
-    config.headers.Accept = 'application/json'
+async function addAuthHeader(
+  config: InternalAxiosRequestConfig,
+): Promise<InternalAxiosRequestConfig> {
+  try {
+    const accessToken = await acquireAccessToken()
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`
+    }
+  } catch (error) {
+    console.error('Token acquisition failed:', error)
   }
 
-  config.withCredentials = true
   return config
 }
 
-apiInstance.interceptors.request.use(async (config) => {
-  const { instance, accounts } = useMsal()
-  const account = accounts[0]
+// Handle request errors
+const onRequestError = (error: AxiosError): Promise<AxiosError> => {
+  return Promise.reject(error)
+}
 
-  if (account) {
-    const response = await instance.acquireTokenSilent({
-      scopes: ['a6c49e8c-e5ef-44e3-a9b3-f9e9a70a9146/.default'],
-      account,
-    })
-    config.headers.Authorization = `Bearer ${response.accessToken}`
-  }
+// Handle responses
+const onResponse = <T>(response: AxiosResponse<T>): AxiosResponse<T> => {
+  return response
+}
 
-  return config
-})
+// Handle response errors
+const onResponseError = (error: AxiosError): Promise<AxiosError> => {
+  // You can add more specific error handling here
+  return Promise.reject(error)
+}
 
-apiInstance.interceptors.request.use(authRequestInterceptor)
-apiInstance.interceptors.response.use(
-  (response) => {
-    return response.data
-  },
-  (error) => {
-    return Promise.reject(error)
-  },
-)
+// Set up interceptors
+function setupInterceptorsTo(axiosInstance: AxiosInstance): AxiosInstance {
+  axiosInstance.interceptors.request.use(addAuthHeader, onRequestError)
+  axiosInstance.interceptors.response.use(onResponse, onResponseError)
+  return axiosInstance
+}
 
-export { apiInstance }
+// Apply interceptors to axiosInstance
+const apiClient = setupInterceptorsTo(axiosInstance)
+
+export default apiClient

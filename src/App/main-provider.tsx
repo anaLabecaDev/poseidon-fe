@@ -5,7 +5,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Alert, Spin } from 'antd'
 import { MainErrorFallback } from '@/components/errors/main-fallback'
 import { msalInstance } from '@/lib/auth/auth-config'
-import { AuthProvider } from '@/lib/auth/auth-provider'
 import { queryClient } from '@/lib/react-query'
 
 const { ErrorBoundary } = Alert
@@ -15,9 +14,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     <React.Suspense fallback={<Spin fullscreen />}>
       <ErrorBoundary message={<MainErrorFallback />}>
         <QueryClientProvider client={queryClient}>
-          <MsalProvider instance={msalInstance}>
-            <AuthProvider>{children}</AuthProvider>
-          </MsalProvider>
+          <MsalProvider instance={msalInstance}>{children}</MsalProvider>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ErrorBoundary>

@@ -1,22 +1,31 @@
-import { useMemo } from 'react'
-import { RouterProvider } from 'react-router-dom'
-import { useQueryClient } from '@tanstack/react-query'
-import { AppProvider } from '@/app/main-provider'
-import { createRouter } from '@/app/routes/routes'
+import { Suspense } from 'react'
+import { IPublicClientApplication } from '@azure/msal-browser'
+import { MsalProvider } from '@azure/msal-react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { Alert, Spin } from 'antd'
+import { AppRouter } from '@/app/routes/routes'
+import { MainErrorFallback } from '@/components/errors/main-fallback'
+import { queryClient } from '@/lib/react-query'
 import './app.css'
 
-const AppRouter = () => {
-  const queryClient = useQueryClient()
-
-  const router = useMemo(() => createRouter(queryClient), [queryClient])
-
-  return <RouterProvider router={router} />
+type AppProps = {
+  msPublicClientApp: IPublicClientApplication
 }
 
-export function App() {
+const { ErrorBoundary } = Alert
+
+export function App({ msPublicClientApp }: AppProps) {
   return (
-    <AppProvider>
-      <AppRouter />
-    </AppProvider>
+    <Suspense fallback={<Spin fullscreen />}>
+      <ErrorBoundary message={<MainErrorFallback />}>
+        <QueryClientProvider client={queryClient}>
+          <MsalProvider instance={msPublicClientApp}>
+            <AppRouter />
+          </MsalProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </ErrorBoundary>
+    </Suspense>
   )
 }
