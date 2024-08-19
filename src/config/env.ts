@@ -1,6 +1,8 @@
 import { EnvSchema } from '@/config/env-schema'
 
 const createEnv = () => {
+  const isTestEnv = import.meta.env.MODE === 'test'
+
   const envVars = Object.entries(import.meta.env).reduce<Record<string, string>>((acc, curr) => {
     const [key, value] = curr
 
@@ -10,6 +12,14 @@ const createEnv = () => {
 
     return acc
   }, {})
+
+  // Provide default/mock values for the test environment
+  if (isTestEnv) {
+    envVars['API_URL'] = envVars['API_URL'] || 'http://localhost:3000/api'
+    envVars['CLIENT_ID'] = envVars['CLIENT_ID'] || 'mock-client-id'
+    envVars['TENANT_ID'] = envVars['TENANT_ID'] || 'mock-tenant-id'
+    envVars['AUTH_SCOPE'] = envVars['AUTH_SCOPE'] || 'mock-auth-scope'
+  }
 
   const parsedEnv = EnvSchema.safeParse(envVars)
 
