@@ -1,6 +1,6 @@
 import { PublicClientApplication } from '@azure/msal-browser'
 import { render, screen } from '@testing-library/react'
-import { App } from '@/app/app'
+import { App } from '@/App/app'
 
 const mockMsalInstance = {
   // Add mock implementation here if needed
