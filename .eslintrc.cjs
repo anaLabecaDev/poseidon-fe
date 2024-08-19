@@ -57,19 +57,7 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: [
-          '**/*.test.ts',
-          '**/*.test.tsx',
-          '**/*.spec.ts',
-          '**/*.spec.tsx',
-          'vite.config.ts',
-          'vitest.config.ts',
-          '**/setupTests.ts',
-          '**/scripts/**',
-          '**/__tests__/**',
-          '**/*.stories.tsx',
-          '**/*.config.ts',
-        ],
+        devDependencies: true,
         optionalDependencies: false,
         peerDependencies: false,
       },

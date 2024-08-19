@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { CalculatorOutlined, CarOutlined, FormOutlined, TeamOutlined } from '@ant-design/icons'
+// import { CalculatorOutlined, CarOutlined, FormOutlined, TeamOutlined } from '@ant-design/icons'
 import { AuthenticatedTemplate } from '@azure/msal-react'
 import { Divider, Layout, Spin, Typography } from 'antd'
 import { useUsers } from '@/lib/auth/auth'
@@ -7,16 +7,16 @@ import { useUsers } from '@/lib/auth/auth'
 const { Header, Footer, Content, Sider } = Layout
 const { Text } = Typography
 
-const menuItems = ['calculator', 'employees', 'itineraries', 'proposals'] as const
+// const menuItems = ['calculator', 'employees', 'itineraries', 'proposals'] as const
 
-type MenuItems = (typeof menuItems)[number]
+// type MenuItems = (typeof menuItems)[number]
 
-const items: Record<MenuItems, { label: string; path: string; icon: JSX.Element }> = {
-  calculator: { label: 'Calculator', path: '/calculator', icon: <CalculatorOutlined /> },
-  employees: { label: 'Employees', path: '/employees', icon: <TeamOutlined /> },
-  itineraries: { label: 'Itineraries', path: '/itineraries', icon: <CarOutlined /> },
-  proposals: { label: 'Proposals', path: '/proposals', icon: <FormOutlined /> },
-}
+// const items: Record<MenuItems, { label: string; path: string; icon: JSX.Element }> = {
+//   calculator: { label: 'Calculator', path: '/calculator', icon: <CalculatorOutlined /> },
+//   employees: { label: 'Employees', path: '/employees', icon: <TeamOutlined /> },
+//   itineraries: { label: 'Itineraries', path: '/itineraries', icon: <CarOutlined /> },
+//   proposals: { label: 'Proposals', path: '/proposals', icon: <FormOutlined /> },
+// }
 
 const DashboardHeader = () => {
   const { data: user, isLoading } = useUsers()
