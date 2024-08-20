@@ -62,7 +62,7 @@
     "@commitlint/config-conventional": "^19.x",
     "@commitlint/prompt-cli": "^19.x",
     "@commitlint/types": "^19.x",
-    "@tanstack/eslint-plugin-query": "5.51.12",
+    "@tanstack/eslint-plugin-query": "5.51.15",
     "@testing-library/jest-dom": "^6.x",
     "@testing-library/react": "^15.x",
     "@testing-library/user-event": "^14.x",
